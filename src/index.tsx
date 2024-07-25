@@ -1,6 +1,7 @@
 import { serveStatic } from '@hono/node-server/serve-static'
 import { Button, Frog, TextInput } from 'frog'
 import { devtools } from 'frog/dev'
+import { verifying } from 'hono/utils/jwt/jws'
 // import { neynar } from 'frog/hubs'
 
 export const app = new Frog({
@@ -11,8 +12,10 @@ export const app = new Frog({
 app.use('/*', serveStatic({ root: './public' }))
 
 app.frame('/', (c) => {
-  const { buttonValue, inputText, status } = c
-  const fruit = inputText || buttonValue
+  const { buttonIndex, inputText, status, 
+    previousButtonValues, initialPath, 
+    verified } = c
+  const fruit = buttonIndex
   return c.res({
     image: (
       <div
@@ -45,13 +48,13 @@ app.frame('/', (c) => {
           }}
         >
           {status === 'response'
-            ? `Nice choice.${fruit ? ` ${fruit.toUpperCase()}!!` : ''}`
-            : 'Welcome!'}
+            ? `Nice choice.${fruit ? ` ${fruit}, ${status}, ${inputText}, ${previousButtonValues}, ${initialPath}, ${verified}!!` : `${status}`}`
+            : `Welcome! ${status}`}
         </div>
       </div>
     ),
     intents: [
-      <TextInput placeholder="Enter custom fruit..." />,
+      <TextInput placeholder="Username" />,
       <Button value="apples">Apples</Button>,
       <Button value="oranges">Oranges</Button>,
       <Button value="bananas">Bananas</Button>,
