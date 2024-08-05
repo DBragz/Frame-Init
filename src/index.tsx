@@ -4,7 +4,7 @@ import { devtools } from 'frog/dev'
 // import { verifying } from 'hono/utils/jwt/jws'
 // import { neynar } from 'frog/hubs'
 
-import { Box, Heading, Text, VStack, vars } from './ui'
+import { vars } from './ui'
 
 export const app = new Frog({
   ui: { vars },
@@ -16,24 +16,17 @@ export const app = new Frog({
 app.use('/*', serveStatic({ root: './public' }))
 
 app.frame('/', (c) => {
-  const { previousButtonValues } = c
+  const { status } = c
   return c.res({
     image: (
       <div
         style={{
           alignItems: 'center',
-          background:
-            status === 'response'
-              ? 'linear-gradient(to right, #432889, #17101F)'
-              : 'black',
           backgroundSize: '100% 100%',
+          backgroundImage: `url(https://wallpapercave.com/wp/dIRfYNy.jpg)`,
           display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'nowrap',
           height: '100%',
           justifyContent: 'center',
-          textAlign: 'center',
-          width: '100%',
         }}
       >
         <div
@@ -42,18 +35,17 @@ app.frame('/', (c) => {
             fontSize: 60,
             fontStyle: 'normal',
             letterSpacing: '-0.025em',
-            lineHeight: 1.4,
-            marginTop: 30,
-            padding: '0 120px',
-            whiteSpace: 'pre-wrap',
+            marginTop: '10%',
+            marginRight: '25%',
           }}
         >
-          {`LEZ ${previousButtonValues}!!` }
+          {`Enter your highschool mascot?` }
         </div>
       </div>
     ),
     intents: [
-      <Button value="GOOOOOO">Do it....</Button>,
+      <TextInput placeholder="Highschool" />,
+      <Button>Set</Button>,
       status === 'response' && <Button.Reset>Reset</Button.Reset>,
     ],
   })
