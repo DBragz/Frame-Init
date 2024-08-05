@@ -16,7 +16,7 @@ export const app = new Frog({
 app.use('/*', serveStatic({ root: './public' }))
 
 app.frame('/', (c) => {
-  const { status } = c
+  const { status, inputText } = c
   return c.res({
     image: (
       <div
@@ -35,11 +35,13 @@ app.frame('/', (c) => {
             fontSize: 60,
             fontStyle: 'normal',
             letterSpacing: '-0.025em',
-            marginTop: '10%',
-            marginRight: '25%',
+            marginTop: '200',
+            marginRight: '100',
+            marginLeft: '20',
           }}
         >
-          {`Enter your highschool mascot?` }
+          {`Enter your highschool mascot?
+            Preivous: ${inputText}` }
         </div>
       </div>
     ),
