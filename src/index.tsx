@@ -35,13 +35,14 @@ app.frame('/', (c) => {
             fontSize: 60,
             fontStyle: 'normal',
             letterSpacing: '-0.025em',
-            marginTop: '200',
-            marginRight: '100',
-            marginLeft: '20',
+            marginTop: '100',
+            marginRight: '250',
+            marginLeft: '10',
           }}
         >
-          {`Enter your highschool mascot?
-            Preivous: ${inputText}` }
+          { status === 'initial' ? 
+              `Enter your highschool mascot?` 
+              : `Highschool mascot: ${inputText}` }
         </div>
       </div>
     ),
