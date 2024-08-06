@@ -18,6 +18,7 @@ app.use('/*', serveStatic({ root: './public' }))
 app.frame('/', (c) => {
   const { status, inputText } = c
   return c.res({
+    action: '/college',
     image: (
       <div
         style={{
@@ -48,8 +49,41 @@ app.frame('/', (c) => {
     ),
     intents: [
       <TextInput placeholder="Highschool" />,
+      <Button>Set</Button>
+    ],
+  })
+})
+
+app.frame('/college', (c) => {
+  const { status, inputText } = c
+  return c.res({
+    image: (
+      <div
+        style={{
+          background: 'linear-gradient(to right, #432889, #17101F)',
+          display: 'flex',
+          height: '100%',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            color: 'white',
+            fontSize: 60,
+            fontStyle: 'normal',
+            letterSpacing: '-0.025em',
+          }}
+        >
+          { status === 'response' && inputText !== undefined ?
+            `Highschool mascot: ${inputText}  Enter your college mascot?` 
+            : 'Enter your highschool mascot?' }
+        </div>
+      </div>
+    ),
+    intents: [
+      <TextInput placeholder="College" />,
       <Button>Set</Button>,
-      status === 'response' && <Button.Reset>Reset</Button.Reset>,
+      <Button.Reset>Submit</Button.Reset>,
     ],
   })
 })
