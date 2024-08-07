@@ -22,6 +22,10 @@ app.frame('/', (c) => {
   console.log(JSON.stringify(c))
   console.log()
 
+  if (inputText !== undefined) {
+    console.log(inputText)
+  }
+
   return c.res({
     image: (
       <div
@@ -46,13 +50,13 @@ app.frame('/', (c) => {
           }}
         >
           { inputText === undefined ? 
-              `Enter your highschool mascot?` 
-              : `Highschool mascot: ${inputText}` }
+              `Enter your highschool mascot` 
+              : `Enter your college mascot` }
         </div>
       </div>
     ),
     intents: [
-      <TextInput placeholder="Highschool" />,
+      <TextInput placeholder="Mascot" />,
       <Button>Set</Button>
     ],
   })
