@@ -16,9 +16,13 @@ export const app = new Frog({
 app.use('/*', serveStatic({ root: './public' }))
 
 app.frame('/', (c) => {
-  const { status, inputText } = c
+  const { inputText } = c
+  
+  console.log()
+  console.log(JSON.stringify(c))
+  console.log()
+
   return c.res({
-    action: '/college',
     image: (
       <div
         style={{
@@ -41,7 +45,7 @@ app.frame('/', (c) => {
             marginLeft: '10',
           }}
         >
-          { status === 'initial' ? 
+          { inputText === undefined ? 
               `Enter your highschool mascot?` 
               : `Highschool mascot: ${inputText}` }
         </div>
@@ -50,40 +54,6 @@ app.frame('/', (c) => {
     intents: [
       <TextInput placeholder="Highschool" />,
       <Button>Set</Button>
-    ],
-  })
-})
-
-app.frame('/college', (c) => {
-  const { status, inputText } = c
-  return c.res({
-    image: (
-      <div
-        style={{
-          background: 'linear-gradient(to right, #432889, #17101F)',
-          display: 'flex',
-          height: '100%',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          style={{
-            color: 'white',
-            fontSize: 60,
-            fontStyle: 'normal',
-            letterSpacing: '-0.025em',
-          }}
-        >
-          { status === 'response' && inputText !== undefined ?
-            `Highschool mascot: ${inputText}  Enter your college mascot?` 
-            : 'Enter your highschool mascot?' }
-        </div>
-      </div>
-    ),
-    intents: [
-      <TextInput placeholder="College" />,
-      <Button>Set</Button>,
-      <Button.Reset>Submit</Button.Reset>,
     ],
   })
 })
