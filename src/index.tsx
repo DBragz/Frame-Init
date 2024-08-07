@@ -16,7 +16,7 @@ export const app = new Frog({
 app.use('/*', serveStatic({ root: './public' }))
 
 app.frame('/', (c) => {
-  const { inputText } = c
+  const { status, inputText } = c
   
   console.log()
   console.log(JSON.stringify(c))
@@ -57,7 +57,8 @@ app.frame('/', (c) => {
     ),
     intents: [
       <TextInput placeholder="Mascot" />,
-      <Button>Set</Button>
+      <Button>Set</Button>,
+      inputText !== undefined && <Button.Reset>Clear</Button.Reset>
     ],
   })
 })
