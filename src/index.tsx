@@ -6,9 +6,18 @@ import { devtools } from 'frog/dev'
 
 import { vars } from './ui'
 
-export const app = new Frog({
+type State = {
+  highschoolMascot?: string,
+  collegeMascot?: string,
+}
+
+export const app = new Frog<{ State: State }>({
   ui: { vars },
   title: 'Mascot Merger',
+  initialState: {
+    highschoolMascot: "",
+    collegeMascot: "",
+  },
   // Supply a Hub to enable frame verification.
   // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
 })
@@ -16,15 +25,33 @@ export const app = new Frog({
 app.use('/*', serveStatic({ root: './public' }))
 
 app.frame('/', (c) => {
-  const { status, inputText } = c
+  const { status, inputText, deriveState } = c
   
   console.log()
   console.log(JSON.stringify(c))
+  console.log(deriveState)
   console.log()
 
-  if (inputText !== undefined) {
-    console.log(inputText)
+  if (status === 'initial' && (deriveState as State).highschoolMascot !== "") {
+    (deriveState as State).highschoolMascot = ""
   }
+
+  const state:State = deriveState(previousState => {
+    if (inputText !== undefined) {
+      if (previousState.highschoolMascot !== "") {
+        previousState.collegeMascot = inputText
+        console.log(`College mascot: ${inputText}`)
+      } else {
+        previousState.highschoolMascot = inputText
+        console.log(`Highschool mascot: ${inputText}`)
+      }
+    }
+  })
+
+  console.log()
+  console.log(state)
+  console.log()
+
 
   return c.res({
     image: (
@@ -49,16 +76,16 @@ app.frame('/', (c) => {
             marginLeft: '10',
           }}
         >
-          { inputText === undefined ? 
-              `Enter your highschool mascot` 
-              : `Enter your college mascot` }
+          { status !== "initial" && state.highschoolMascot !== "" ? 
+              "Enter your college mascot" 
+              : "Enter your highschool mascot" }
         </div>
       </div>
     ),
     intents: [
       <TextInput placeholder="Mascot" />,
       <Button>Set</Button>,
-      inputText !== undefined && <Button.Reset>Clear</Button.Reset>
+      status !== "initial" && state.highschoolMascot !== "" && <Button.Reset>Clear</Button.Reset>
     ],
   })
 })
