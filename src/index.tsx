@@ -29,7 +29,8 @@ app.frame('/', (c) => {
   
   console.log()
   console.log(JSON.stringify(c))
-  console.log(deriveState)
+  console.log(status)
+  console.log(inputText)
   console.log()
 
   if (status === 'initial' && (deriveState as State).highschoolMascot !== "") {
@@ -52,6 +53,44 @@ app.frame('/', (c) => {
   console.log(state)
   console.log()
 
+  if (inputText !== undefined && state.highschoolMascot !== "" && state.collegeMascot !== "") {
+    return c.res({
+      image: (
+        <div
+          style={{
+            alignItems: 'center',
+            background:'linear-gradient(to right, #432889, #17101F)',
+            backgroundSize: '100% 100%',
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'nowrap',
+            height: '100%',
+            justifyContent: 'center',
+            textAlign: 'center',
+            width: '100%',
+          }}
+        >
+          <div
+            style={{
+              color: 'white',
+              fontSize: 60,
+              fontStyle: 'normal',
+              letterSpacing: '-0.025em',
+              lineHeight: 1.4,
+              marginTop: 30,
+              padding: '0 120px',
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            { 'Generating Image ⏳' }
+          </div>
+        </div>
+      ),
+      intents: [
+        <Button.Reset>Reset</Button.Reset>
+      ],
+    })
+  }
 
   return c.res({
     image: (
@@ -76,16 +115,16 @@ app.frame('/', (c) => {
             marginLeft: '10',
           }}
         >
-          { status !== "initial" && state.highschoolMascot !== "" ? 
-              "Enter your college mascot" 
-              : "Enter your highschool mascot" }
+          { status !== 'initial' && state.highschoolMascot !== '' ? 
+              'Enter your college mascot' 
+              : 'Enter your highschool mascot' }
         </div>
       </div>
     ),
     intents: [
-      <TextInput placeholder="Mascot" />,
+      <TextInput placeholder='Mascot' />,
       <Button>Set</Button>,
-      status !== "initial" && state.highschoolMascot !== "" && <Button.Reset>Clear</Button.Reset>
+      status !== 'initial' && state.highschoolMascot !== '' && <Button.Reset>Clear</Button.Reset>
     ],
   })
 })
